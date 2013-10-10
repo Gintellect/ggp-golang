@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -13,12 +14,15 @@ func main() {
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
-func messageHandler(rw http.ResponseWriter, req *http.Request) {
-	msg, err := ioutil.ReadAll(req.Body)
+func messageHandler(w http.ResponseWriter, r *http.Request) {
+	msg, err := ioutil.ReadAll(r.Body)
 
 	if err != nil {
 		log.Printf("%s\n", err)
 	}
 
 	log.Printf("Received: %s\n", msg)
+	reply := "( (name DeepBeige) (status available) )"
+	fmt.Fprintf(w, "%s", reply)
+	log.Printf("Replied : %s\n", reply)
 }
